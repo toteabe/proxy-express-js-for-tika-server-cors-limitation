@@ -1,0 +1,38 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch Program proxyTika",
+            "program": "${workspaceFolder}/proxyTika.js",
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node",
+            "console": "integratedTerminal",
+            "runtimeExecutable": "/home/user/.nvm/versions/node/v22.19.0/bin/node"
+
+        },
+{
+            "name": "Attach to Chrome",
+            "type": "chrome",
+            "request": "attach",
+            "port": 9222,
+            "webRoot": "${workspaceFolder}"
+        },
+        {
+            "name": "Launch Chrome against localhost",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://127.0.0.1:5500",
+            "webRoot": "${workspaceFolder}",
+            "runtimeArgs": [
+                "--remote-debugging-port=9222",
+                "--user-data-dir=${workspaceFolder}/.chrome-debug"
+            ]
+        }
+    ]
+}
