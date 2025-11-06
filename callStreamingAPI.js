@@ -1,7 +1,7 @@
 
 async function callStreamingAPI() {
 
-    let input_user = prompt("Pregúntale a la IA: ")
+    let input_user = prompt("Ask AI: ")
 
       try {
         const response = await fetch('http://localhost:11434/api/generate', {
