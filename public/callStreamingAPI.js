@@ -1,7 +1,7 @@
 
-async function callStreamingAPI() {
+async function callStreamingAPI(input_user) {
 
-    let input_user = prompt("Ask AI: ")
+    //let input_user = prompt("Ask AI: ")
 
       try {
         const response = await fetch('http://localhost:11434/api/generate', {
@@ -11,7 +11,7 @@ async function callStreamingAPI() {
           },
           body: JSON.stringify({
             model: 'qwen3:8b',
-            prompt: input_user
+            prompt: 'You are a IT specialist with a huge knowledge of Development Environments, can you explain shrtly the term: ' + input_user
           })
         });
 
@@ -43,5 +43,3 @@ async function callStreamingAPI() {
         console.error('Error calling the API:', error);
       }
     }
-
-    //callStreamingAPI();

@@ -43,5 +43,3 @@ async function uploadFiles(form) {
     }
 
 }
-
-callExtractTextAPI();
