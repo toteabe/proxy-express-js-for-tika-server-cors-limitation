@@ -21,17 +21,40 @@ app.use(cors());
 app.get('/ai', (req, res)=> {
 
     let salida = `
-  <!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>proxyTika</title>
-    <script src='/callStreamingAPI.js'></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>proxyTikaAI</title>
+
+  <!-- Hoja de estilos con la paleta cálida -->
+  <link rel="stylesheet" href="styles.css"/>
+
+  <!-- Tu script de streaming -->
+  <script src="./callStreamingAPI.js"></script>
 </head>
-<body> 
-    <div id='output'>
-    </div>
+<body>
+  <main class="container stack">
+    <!-- Tarjeta con formulario pequeño/inline -->
+    <section class="card">
+      <h2>Subir archivos</h2>
+      <form action="/" method="post" enctype="multipart/form-data" class="small form-inline">
+        <div class="field">
+          <label for="file">Selecciona archivo(s)</label>
+          <input id="file" name="file" type="file" multiple />
+          <p class="help">Puedes seleccionar varios archivos.</p>
+        </div>
+        <button type="submit" class="btn">Upload</button>
+      </form>
+    </section>
+
+    <!-- Panel de salida estilo "stream" -->
+    <section class="card">
+      <h2>Salida</h2>
+      <div id="output" class="stream-panel" aria-live="polite" aria-atomic="false"></div>
+    </section>
+  </main>
     <script>callStreamingAPI('${req.query.t}')</script>
 </body>
 </html>
@@ -82,30 +105,55 @@ app.post('/', upload.single('file') , async function(req, res) {
 
   const data = await upstream.text();
 
-  let tokens = data.split(/\s+/)                  
-                      .sort()
+  let tokens = data.split(/\s+/)                                        
                       .flatMap(e => e.split(/\W+/))
                       .filter(Boolean)
+                      .map(t => t.toLowerCase())                  
                       .filter((value, index, self) => {
                           return self.indexOf(value) === index;
                         }
                       )
+                      .filter(t => t.length > 1)                      
+                      .filter(t => /[a-zA-Z]+/.test(t))
+                      .sort((a, b) => a.localeCompare(b))
                       .map(t => "<a href='ai?t="+t+"'>"+t+"</a><br/>")
                       .join('\n');
 
   let salida = `
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>proxyTika</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>proxyTikaAI</title>
+
+  <!-- Hoja de estilos con la paleta cálida -->
+  <link rel="stylesheet" href="styles.css"/>
+
+  <!-- Tu script de streaming -->
+  <script src="./callStreamingAPI.js"></script>
 </head>
-<body> 
-    <div>
-        ${tokens}
-    </div>
-    
+<body>
+  <main class="container stack">
+    <!-- Tarjeta con formulario pequeño/inline -->
+    <section class="card">
+      <h2>Subir archivos</h2>
+      <form action="/" method="post" enctype="multipart/form-data" class="small form-inline">
+        <div class="field">
+          <label for="file">Selecciona archivo(s)</label>
+          <input id="file" name="file" type="file" multiple />
+          <p class="help">Puedes seleccionar varios archivos.</p>
+        </div>
+        <button type="submit" class="btn">Upload</button>
+      </form>
+    </section>
+
+    <!-- Panel de salida estilo "stream" -->
+    <section class="card">
+      <h2>Salida</h2>
+      <div id="output" class="stream-panel" aria-live="polite" aria-atomic="false">${tokens}</div>
+    </section>
+  </main>
 </body>
 </html>
   `

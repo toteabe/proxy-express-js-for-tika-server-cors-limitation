@@ -10,8 +10,8 @@ async function callStreamingAPI(input_user) {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            model: 'qwen3:8b',
-            prompt: 'You are a IT specialist with a huge knowledge of Development Environments, can you explain shrtly the term: ' + input_user
+            model: 'gemma3:latest',
+            prompt: "You are a IT specialist with a huge knowledge of Development Environments. Explain shortly the term: '" + input_user + "'. Don't ask at the end of the answer to the user for more details or options." 
           })
         });
 
@@ -22,6 +22,7 @@ async function callStreamingAPI(input_user) {
         let done = false;
         while (!done) {
           const { value, done: readerDone } = await reader.read();
+
           done = readerDone;
 
           if (value) {
@@ -31,6 +32,7 @@ async function callStreamingAPI(input_user) {
 
             parts.forEach(part => {
               try {
+                document.getElementById('output').classList.add('is-live');
                 const json = JSON.parse(part);
                 outputElement.innerHTML += json.response;
               } catch (err) {
@@ -39,6 +41,7 @@ async function callStreamingAPI(input_user) {
             });
           }
         }
+        document.getElementById('output').classList.remove('is-live');
       } catch (error) {
         console.error('Error calling the API:', error);
       }
