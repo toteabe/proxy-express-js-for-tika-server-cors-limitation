@@ -34,7 +34,7 @@ async function callStreamingAPI(input_user) {
               try {
                 document.getElementById('output').classList.add('is-live');
                 const json = JSON.parse(part);
-                outputElement.innerHTML += json.response;
+                outputElement.innerHTML += json.response;                
               } catch (err) {
                 console.error('Error parsing chunk:', err);
               }
@@ -42,6 +42,7 @@ async function callStreamingAPI(input_user) {
           }
         }
         document.getElementById('output').classList.remove('is-live');
+        document.getElementById('btnPlay').disabled = false;
       } catch (error) {
         console.error('Error calling the API:', error);
       }

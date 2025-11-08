@@ -5,8 +5,8 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch Program proxyTika",
-            "program": "${workspaceFolder}/proxyTika.js",
+            "name": "Launch Program wordly",
+            "program": "${workspaceFolder}/wordly.js",
             "request": "launch",
             "skipFiles": [
                 "<node_internals>/**"
